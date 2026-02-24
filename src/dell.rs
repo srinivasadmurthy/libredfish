@@ -74,7 +74,7 @@ impl Redfish for Bmc {
         password: &str,
         role_id: RoleId,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter create_user {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter create_user {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // Find an unused ID
         // 'root' is typically ID 2 on an iDrac, and ID 1 might be special
         let mut account_id = 3;
@@ -104,17 +104,17 @@ impl Redfish for Bmc {
     }
 
     async fn delete_user(&self, username: &str) -> Result<(), RedfishError> {
-        println!("SDM enter delete_user {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter delete_user {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.delete_user(username).await
     }
 
     async fn change_username(&self, old_name: &str, new_name: &str) -> Result<(), RedfishError> {
-        println!("SDM enter change_username {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter change_username {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.change_username(old_name, new_name).await
     }
 
     async fn change_password(&self, username: &str, new_pass: &str) -> Result<(), RedfishError> {
-        println!("SDM enter change_password {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter change_password {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.change_password(username, new_pass).await
     }
 
@@ -123,27 +123,27 @@ impl Redfish for Bmc {
         account_id: &str,
         new_pass: &str,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter change_password_by_id {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter change_password_by_id {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.change_password_by_id(account_id, new_pass).await
     }
 
     async fn get_accounts(&self) -> Result<Vec<ManagerAccount>, RedfishError> {
-        println!("SDM enter get_accounts {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_accounts {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_accounts().await
     }
 
     async fn get_power_state(&self) -> Result<PowerState, RedfishError> {
-        println!("SDM enter get_power_state {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_power_state {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_power_state().await
     }
 
     async fn get_power_metrics(&self) -> Result<Power, RedfishError> {
-        println!("SDM enter get_power_metrics {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_power_metrics {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_power_metrics().await
     }
 
     async fn power(&self, action: SystemPowerControl) -> Result<(), RedfishError> {
-        println!("SDM enter power {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter power {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         if action == SystemPowerControl::ACPowercycle {
             let is_lockdown = self.is_lockdown().await?;
             let bios_attrs = self.s.bios_attributes().await?;
@@ -164,12 +164,12 @@ impl Redfish for Bmc {
     }
 
     fn ac_powercycle_supported_by_power(&self) -> bool {
-        println!("SDM enter ac_powercycle_supported_by_power {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter ac_powercycle_supported_by_power {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         true
     }
 
     async fn bmc_reset(&self) -> Result<(), RedfishError> {
-        println!("SDM enter bmc_reset {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter bmc_reset {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.bmc_reset().await
     }
 
@@ -178,27 +178,27 @@ impl Redfish for Bmc {
         chassis_id: &str,
         reset_type: SystemPowerControl,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter chassis_reset {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter chassis_reset {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.chassis_reset(chassis_id, reset_type).await
     }
 
     async fn get_thermal_metrics(&self) -> Result<Thermal, RedfishError> {
-        println!("SDM enter get_thermal_metrics {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_thermal_metrics {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_thermal_metrics().await
     }
 
     async fn get_gpu_sensors(&self) -> Result<Vec<GPUSensors>, RedfishError> {
-        println!("SDM enter get_gpu_sensors {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_gpu_sensors {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_gpu_sensors().await
     }
 
     async fn get_update_service(&self) -> Result<UpdateService, RedfishError> {
-        println!("SDM enter get_update_service {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_update_service {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_update_service().await
     }
 
     async fn get_system_event_log(&self) -> Result<Vec<LogEntry>, RedfishError> {
-        println!("SDM enter get_system_event_log {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_system_event_log {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.get_system_event_log().await
     }
 
@@ -206,18 +206,18 @@ impl Redfish for Bmc {
         &self,
         from: Option<chrono::DateTime<chrono::Utc>>,
     ) -> Result<Vec<LogEntry>, RedfishError> {
-        println!("SDM enter get_bmc_event_log {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_bmc_event_log {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // Different Dell timestamp formats (UTC-5, DST, etc..) are making filtering and comparing very difficult
         self.s.get_bmc_event_log(from).await
     }
 
     async fn get_drives_metrics(&self) -> Result<Vec<Drives>, RedfishError> {
-        println!("SDM enter get_drives_metrics {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_drives_metrics {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_drives_metrics().await
     }
 
     async fn bios(&self) -> Result<HashMap<String, serde_json::Value>, RedfishError> {
-        println!("SDM enter bios {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter bios {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.bios().await
     }
 
@@ -225,7 +225,7 @@ impl Redfish for Bmc {
         &self,
         values: HashMap<String, serde_json::Value>,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter set_bios {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_bios {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset, // requires reboot to apply
         };
@@ -244,12 +244,12 @@ impl Redfish for Bmc {
     }
 
     async fn reset_bios(&self) -> Result<(), RedfishError> {
-        println!("SDM enter reset_bios {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter reset_bios {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.factory_reset_bios().await
     }
 
     async fn get_base_mac_address(&self) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter get_base_mac_address {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_base_mac_address {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_base_mac_address().await
     }
 
@@ -262,7 +262,7 @@ impl Redfish for Bmc {
         >,
         selected_profile: BiosProfileType,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter machine_setup {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter machine_setup {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.delete_job_queue().await?;
 
         let apply_time = dell::SetSettingsApplyTime {
@@ -331,7 +331,7 @@ impl Redfish for Bmc {
         &self,
         boot_interface_mac: Option<&str>,
     ) -> Result<MachineSetupStatus, RedfishError> {
-        println!("SDM enter machine_setup_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter machine_setup_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // Check BIOS and BMC attributes
         let mut diffs = self.diff_bios_bmc_attr(boot_interface_mac).await?;
 
@@ -366,7 +366,7 @@ impl Redfish for Bmc {
     /// iDRAC does not suport changing password policy. They support IP blocking instead.
     /// https://github.com/dell/iDRAC-Redfish-Scripting/issues/295
     async fn set_machine_password_policy(&self) -> Result<(), RedfishError> {
-        println!("SDM enter set_machine_password_policy {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_machine_password_policy {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // These are all password policy a Dell has, and they are all read only.
         // Redfish will reject attempts to modify them.
         // - AccountLockoutThreshold
@@ -377,7 +377,7 @@ impl Redfish for Bmc {
     }
 
     async fn lockdown(&self, target: EnabledDisabled) -> Result<(), RedfishError> {
-        println!("SDM enter lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         use EnabledDisabled::*;
         // XE9680's can't PXE boot for some reason
         let system = self.s.get_system().await?;
@@ -399,7 +399,7 @@ impl Redfish for Bmc {
     }
 
     async fn lockdown_status(&self) -> Result<Status, RedfishError> {
-        println!("SDM enter lockdown_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter lockdown_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let mut message = String::new();
         let enabled = EnabledDisabled::Enabled.to_string();
         let disabled = EnabledDisabled::Disabled.to_string();
@@ -429,7 +429,7 @@ impl Redfish for Bmc {
     }
 
     async fn setup_serial_console(&self) -> Result<(), RedfishError> {
-        println!("SDM enter setup_serial_console {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter setup_serial_console {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.delete_job_queue().await?;
 
         self.setup_bmc_remote_access().await?;
@@ -488,7 +488,7 @@ impl Redfish for Bmc {
     }
 
     async fn serial_console_status(&self) -> Result<Status, RedfishError> {
-        println!("SDM enter serial_console_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter serial_console_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let Status {
             status: remote_access_status,
             message: remote_access_message,
@@ -513,17 +513,17 @@ impl Redfish for Bmc {
     }
 
     async fn get_boot_options(&self) -> Result<BootOptions, RedfishError> {
-        println!("SDM enter get_boot_options {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_boot_options {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_boot_options().await
     }
 
     async fn get_boot_option(&self, option_id: &str) -> Result<BootOption, RedfishError> {
-        println!("SDM enter get_boot_option {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_boot_option {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_boot_option(option_id).await
     }
 
     async fn boot_once(&self, target: Boot) -> Result<(), RedfishError> {
-        println!("SDM enter boot_once {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter boot_once {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         match target {
             Boot::Pxe => self.set_boot_first(dell::BootDevices::PXE, true).await,
             Boot::HardDisk => self.set_boot_first(dell::BootDevices::HDD, true).await,
@@ -534,7 +534,7 @@ impl Redfish for Bmc {
     }
 
     async fn boot_first(&self, target: Boot) -> Result<(), RedfishError> {
-        println!("SDM enter boot_first {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter boot_first {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         match target {
             Boot::Pxe => self.set_boot_first(dell::BootDevices::PXE, false).await,
             Boot::HardDisk => self.set_boot_first(dell::BootDevices::HDD, false).await,
@@ -545,7 +545,7 @@ impl Redfish for Bmc {
     }
 
     async fn clear_tpm(&self) -> Result<(), RedfishError> {
-        println!("SDM enter clear_tpm {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter clear_tpm {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.delete_job_queue().await?;
 
         let apply_time = dell::SetSettingsApplyTime {
@@ -568,17 +568,17 @@ impl Redfish for Bmc {
     }
 
     async fn pending(&self) -> Result<HashMap<String, serde_json::Value>, RedfishError> {
-        println!("SDM enter pending {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter pending {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.pending().await
     }
 
     async fn clear_pending(&self) -> Result<(), RedfishError> {
-        println!("SDM enter clear_pending {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter clear_pending {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.delete_job_queue().await
     }
 
     async fn pcie_devices(&self) -> Result<Vec<PCIeDevice>, RedfishError> {
-        println!("SDM enter pcie_devices {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter pcie_devices {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.pcie_devices().await
     }
 
@@ -586,7 +586,7 @@ impl Redfish for Bmc {
         &self,
         firmware: tokio::fs::File,
     ) -> Result<crate::model::task::Task, RedfishError> {
-        println!("SDM enter update_firmware {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter update_firmware {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.update_firmware(firmware).await
     }
 
@@ -598,7 +598,7 @@ impl Redfish for Bmc {
         timeout: Duration,
         _component_type: ComponentType,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter update_firmware_multipart {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter update_firmware_multipart {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let firmware = File::open(&filename)
             .await
             .map_err(|e| RedfishError::FileError(format!("Could not open file: {e}")))?;
@@ -634,27 +634,27 @@ impl Redfish for Bmc {
     }
 
     async fn get_tasks(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_tasks {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_tasks {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_tasks().await
     }
 
     async fn get_task(&self, id: &str) -> Result<crate::model::task::Task, RedfishError> {
-        println!("SDM enter get_task {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_task {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_task(id).await
     }
 
     async fn get_firmware(&self, id: &str) -> Result<SoftwareInventory, RedfishError> {
-        println!("SDM enter get_firmware {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_firmware {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_firmware(id).await
     }
 
     async fn get_software_inventories(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_software_inventories {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_software_inventories {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_software_inventories().await
     }
 
     async fn get_system(&self) -> Result<ComputerSystem, RedfishError> {
-        println!("SDM enter get_system {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_system {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_system().await
     }
 
@@ -663,7 +663,7 @@ impl Redfish for Bmc {
         database_id: &str,
         certificate_id: &str,
     ) -> Result<Certificate, RedfishError> {
-        println!("SDM enter get_secure_boot_certificate {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_secure_boot_certificate {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s
             .get_secure_boot_certificate(database_id, certificate_id)
             .await
@@ -673,7 +673,7 @@ impl Redfish for Bmc {
         &self,
         database_id: &str,
     ) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_secure_boot_certificates {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_secure_boot_certificates {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_secure_boot_certificates(database_id).await
     }
 
@@ -682,24 +682,24 @@ impl Redfish for Bmc {
         pem_cert: &str,
         database_id: &str,
     ) -> Result<Task, RedfishError> {
-        println!("SDM enter add_secure_boot_certificate {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter add_secure_boot_certificate {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s
             .add_secure_boot_certificate(pem_cert, database_id)
             .await
     }
 
     async fn get_secure_boot(&self) -> Result<SecureBoot, RedfishError> {
-        println!("SDM enter get_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_secure_boot().await
     }
 
     async fn enable_secure_boot(&self) -> Result<(), RedfishError> {
-        println!("SDM enter enable_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.enable_secure_boot().await
     }
 
     async fn disable_secure_boot(&self) -> Result<(), RedfishError> {
-        println!("SDM enter disable_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter disable_secure_boot {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.disable_secure_boot().await
     }
 
@@ -709,7 +709,7 @@ impl Redfish for Bmc {
         id: &str,
         port: Option<&str>,
     ) -> Result<NetworkDeviceFunction, RedfishError> {
-        println!("SDM enter get_network_device_function {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_network_device_function {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let Some(port) = port else {
             return Err(RedfishError::GenericError {
                 error: "Port is missing for Dell.".to_string(),
@@ -727,22 +727,22 @@ impl Redfish for Bmc {
         &self,
         chassis_id: &str,
     ) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_network_device_functions {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_network_device_functions {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_network_device_functions(chassis_id).await
     }
 
     async fn get_chassis_all(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_chassis_all {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_chassis_all {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_chassis_all().await
     }
 
     async fn get_chassis(&self, id: &str) -> Result<Chassis, RedfishError> {
-        println!("SDM enter get_chassis {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_chassis {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_chassis(id).await
     }
 
     async fn get_chassis_assembly(&self, chassis_id: &str) -> Result<Assembly, RedfishError> {
-        println!("SDM enter get_chassis_assembly {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_chassis_assembly {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_chassis_assembly(chassis_id).await
     }
 
@@ -750,7 +750,7 @@ impl Redfish for Bmc {
         &self,
         chassis_id: &str,
     ) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_chassis_network_adapters {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_chassis_network_adapters {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_chassis_network_adapters(chassis_id).await
     }
 
@@ -759,7 +759,7 @@ impl Redfish for Bmc {
         chassis_id: &str,
         id: &str,
     ) -> Result<NetworkAdapter, RedfishError> {
-        println!("SDM enter get_chassis_network_adapter {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_chassis_network_adapter {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_chassis_network_adapter(chassis_id, id).await
     }
 
@@ -767,7 +767,7 @@ impl Redfish for Bmc {
         &self,
         system_id: &str,
     ) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_base_network_adapters {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_base_network_adapters {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_base_network_adapters(system_id).await
     }
 
@@ -776,7 +776,7 @@ impl Redfish for Bmc {
         system_id: &str,
         id: &str,
     ) -> Result<NetworkAdapter, RedfishError> {
-        println!("SDM enter get_base_network_adapter {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_base_network_adapter {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_base_network_adapter(system_id, id).await
     }
 
@@ -785,7 +785,7 @@ impl Redfish for Bmc {
         chassis_id: &str,
         network_adapter: &str,
     ) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_ports {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_ports {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_ports(chassis_id, network_adapter).await
     }
 
@@ -795,12 +795,12 @@ impl Redfish for Bmc {
         network_adapter: &str,
         id: &str,
     ) -> Result<crate::NetworkPort, RedfishError> {
-        println!("SDM enter get_port {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_port {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_port(chassis_id, network_adapter, id).await
     }
 
     async fn get_manager_ethernet_interfaces(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_manager_ethernet_interfaces {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_manager_ethernet_interfaces {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_manager_ethernet_interfaces().await
     }
 
@@ -808,12 +808,12 @@ impl Redfish for Bmc {
         &self,
         id: &str,
     ) -> Result<crate::EthernetInterface, RedfishError> {
-        println!("SDM enter get_manager_ethernet_interface {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_manager_ethernet_interface {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_manager_ethernet_interface(id).await
     }
 
     async fn get_system_ethernet_interfaces(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_system_ethernet_interfaces {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_system_ethernet_interfaces {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_system_ethernet_interfaces().await
     }
 
@@ -821,7 +821,7 @@ impl Redfish for Bmc {
         &self,
         id: &str,
     ) -> Result<crate::EthernetInterface, RedfishError> {
-        println!("SDM enter get_system_ethernet_interface {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_system_ethernet_interface {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_system_ethernet_interface(id).await
     }
 
@@ -830,7 +830,7 @@ impl Redfish for Bmc {
         current_uefi_password: &str,
         new_uefi_password: &str,
     ) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter change_uefi_password {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter change_uefi_password {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // The uefi password cant be changed if the host is in lockdown
         if self.is_lockdown().await? {
             return Err(RedfishError::Lockdown);
@@ -844,37 +844,37 @@ impl Redfish for Bmc {
     }
 
     async fn change_boot_order(&self, boot_array: Vec<String>) -> Result<(), RedfishError> {
-        println!("SDM enter change_boot_order {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter change_boot_order {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.change_boot_order(boot_array).await
     }
 
     async fn get_service_root(&self) -> Result<ServiceRoot, RedfishError> {
-        println!("SDM enter get_service_root {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_service_root {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_service_root().await
     }
 
     async fn get_systems(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_systems {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_systems {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_systems().await
     }
 
     async fn get_managers(&self) -> Result<Vec<String>, RedfishError> {
-        println!("SDM enter get_managers {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_managers {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_managers().await
     }
 
     async fn get_manager(&self) -> Result<Manager, RedfishError> {
-        println!("SDM enter get_manager {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_manager {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_manager().await
     }
 
     async fn bmc_reset_to_defaults(&self) -> Result<(), RedfishError> {
-        println!("SDM enter bmc_reset_to_defaults {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter bmc_reset_to_defaults {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.bmc_reset_to_defaults().await
     }
 
     async fn get_job_state(&self, job_id: &str) -> Result<JobState, RedfishError> {
-        println!("SDM enter get_job_state {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_job_state {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = format!("Managers/iDRAC.Embedded.1/Oem/Dell/Jobs/{}", job_id);
         let (_status_code, body): (_, HashMap<String, serde_json::Value>) =
             self.s.client.get(&url).await?;
@@ -918,12 +918,12 @@ impl Redfish for Bmc {
     }
 
     async fn get_collection(&self, id: ODataId) -> Result<Collection, RedfishError> {
-        println!("SDM enter get_collection {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_collection {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_collection(id).await
     }
 
     async fn get_resource(&self, id: ODataId) -> Result<Resource, RedfishError> {
-        println!("SDM enter get_resource {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_resource {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_resource(id).await
     }
 
@@ -933,7 +933,7 @@ impl Redfish for Bmc {
         &self,
         boot_interface_mac: &str,
     ) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter set_boot_order_dpu_first {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_boot_order_dpu_first {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let expected_boot_option_name: String = self
             .get_expected_dpu_boot_option_name(boot_interface_mac)
             .await?;
@@ -971,7 +971,7 @@ impl Redfish for Bmc {
         &self,
         current_uefi_password: &str,
     ) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter clear_uefi_password {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter clear_uefi_password {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         match self.change_uefi_password(current_uefi_password, "").await {
             Ok(job_id) => return Ok(job_id),
             Err(e) => {
@@ -990,7 +990,7 @@ impl Redfish for Bmc {
     }
 
     async fn lockdown_bmc(&self, target: crate::EnabledDisabled) -> Result<(), RedfishError> {
-        println!("SDM enter lockdown_bmc {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter lockdown_bmc {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         use EnabledDisabled::*;
 
         // XE9680's can't PXE boot for some reason
@@ -1007,7 +1007,7 @@ impl Redfish for Bmc {
     }
 
     async fn is_ipmi_over_lan_enabled(&self) -> Result<bool, RedfishError> {
-        println!("SDM enter is_ipmi_over_lan_enabled {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter is_ipmi_over_lan_enabled {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.is_ipmi_over_lan_enabled().await
     }
 
@@ -1015,7 +1015,7 @@ impl Redfish for Bmc {
         &self,
         target: crate::EnabledDisabled,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter enable_ipmi_over_lan {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_ipmi_over_lan {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.enable_ipmi_over_lan(target).await
     }
 
@@ -1025,41 +1025,41 @@ impl Redfish for Bmc {
         targets: Vec<String>,
         transfer_protocol: TransferProtocolType,
     ) -> Result<Task, RedfishError> {
-        println!("SDM enter update_firmware_simple_update {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter update_firmware_simple_update {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s
             .update_firmware_simple_update(image_uri, targets, transfer_protocol)
             .await
     }
 
     async fn enable_rshim_bmc(&self) -> Result<(), RedfishError> {
-        println!("SDM enter enable_rshim_bmc {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_rshim_bmc {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.enable_rshim_bmc().await
     }
 
     async fn clear_nvram(&self) -> Result<(), RedfishError> {
-        println!("SDM enter clear_nvram {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter clear_nvram {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.clear_nvram().await
     }
 
     async fn get_nic_mode(&self) -> Result<Option<NicMode>, RedfishError> {
-        println!("SDM enter get_nic_mode {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_nic_mode {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_nic_mode().await
     }
 
     async fn set_nic_mode(&self, mode: NicMode) -> Result<(), RedfishError> {
-        println!("SDM enter set_nic_mode {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_nic_mode {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.set_nic_mode(mode).await
     }
 
     async fn enable_infinite_boot(&self) -> Result<(), RedfishError> {
-        println!("SDM enter enable_infinite_boot {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_infinite_boot {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let attrs: HashMap<String, serde_json::Value> =
             HashMap::from([("BootSeqRetry".to_string(), "Enabled".into())]);
         self.set_bios(attrs).await
     }
 
     async fn is_infinite_boot_enabled(&self) -> Result<Option<bool>, RedfishError> {
-        println!("SDM enter is_infinite_boot_enabled {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter is_infinite_boot_enabled {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = format!("Systems/{}/Bios", self.s.system_id());
         let bios = self.bios().await?;
         let bios_attributes = jsonmap::get_object(&bios, "Attributes", &url)?;
@@ -1072,22 +1072,22 @@ impl Redfish for Bmc {
     }
 
     async fn set_host_rshim(&self, enabled: EnabledDisabled) -> Result<(), RedfishError> {
-        println!("SDM enter set_host_rshim {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_host_rshim {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.set_host_rshim(enabled).await
     }
 
     async fn get_host_rshim(&self) -> Result<Option<EnabledDisabled>, RedfishError> {
-        println!("SDM enter get_host_rshim {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_host_rshim {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_host_rshim().await
     }
 
     async fn set_idrac_lockdown(&self, enabled: EnabledDisabled) -> Result<(), RedfishError> {
-        println!("SDM enter set_idrac_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_idrac_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.set_idrac_lockdown(enabled).await
     }
 
     async fn get_boss_controller(&self) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter get_boss_controller {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_boss_controller {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.get_boss_controller().await
     }
 
@@ -1095,7 +1095,7 @@ impl Redfish for Bmc {
         &self,
         controller_id: &str,
     ) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter decommission_storage_controller {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter decommission_storage_controller {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         Ok(Some(self.decommission_controller(controller_id).await?))
     }
 
@@ -1104,7 +1104,7 @@ impl Redfish for Bmc {
         controller_id: &str,
         volume_name: &str,
     ) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter create_storage_volume {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter create_storage_volume {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let drives = self.get_storage_drives(controller_id).await?;
 
         let raid_type = match drives.as_array().map(|a| a.len()).unwrap_or(0) {
@@ -1126,7 +1126,7 @@ impl Redfish for Bmc {
     }
 
     async fn is_boot_order_setup(&self, boot_interface_mac: &str) -> Result<bool, RedfishError> {
-        println!("SDM enter is_boot_order_setup {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter is_boot_order_setup {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let (expected, actual) = self
             .get_expected_and_actual_first_boot_option(boot_interface_mac)
             .await?;
@@ -1134,13 +1134,13 @@ impl Redfish for Bmc {
     }
 
     async fn is_bios_setup(&self, boot_interface_mac: Option<&str>) -> Result<bool, RedfishError> {
-        println!("SDM enter is_bios_setup {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter is_bios_setup {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let diffs = self.diff_bios_bmc_attr(boot_interface_mac).await?;
         Ok(diffs.is_empty())
     }
 
     async fn get_component_integrities(&self) -> Result<ComponentIntegrities, RedfishError> {
-        println!("SDM enter get_component_integrities {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_component_integrities {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_component_integrities().await
     }
 
@@ -1148,7 +1148,7 @@ impl Redfish for Bmc {
         &self,
         componnent_integrity_id: &str,
     ) -> Result<crate::model::software_inventory::SoftwareInventory, RedfishError> {
-        println!("SDM enter get_firmware_for_component {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_firmware_for_component {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s
             .get_firmware_for_component(componnent_integrity_id)
             .await
@@ -1158,7 +1158,7 @@ impl Redfish for Bmc {
         &self,
         url: &str,
     ) -> Result<crate::model::component_integrity::CaCertificate, RedfishError> {
-        println!("SDM enter get_component_ca_certificate {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_component_ca_certificate {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_component_ca_certificate(url).await
     }
 
@@ -1167,7 +1167,7 @@ impl Redfish for Bmc {
         url: &str,
         nonce: &str,
     ) -> Result<Task, RedfishError> {
-        println!("SDM enter trigger_evidence_collection {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter trigger_evidence_collection {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.trigger_evidence_collection(url, nonce).await
     }
 
@@ -1175,7 +1175,7 @@ impl Redfish for Bmc {
         &self,
         url: &str,
     ) -> Result<crate::model::component_integrity::Evidence, RedfishError> {
-        println!("SDM enter get_evidence {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_evidence {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.get_evidence(url).await
     }
 
@@ -1183,12 +1183,12 @@ impl Redfish for Bmc {
         &self,
         level: HostPrivilegeLevel,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter set_host_privilege_level {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_host_privilege_level {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.s.set_host_privilege_level(level).await
     }
 
     async fn set_utc_timezone(&self) -> Result<(), RedfishError> {
-        println!("SDM enter set_utc_timezone {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_utc_timezone {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
 
@@ -1202,7 +1202,7 @@ impl Redfish for Bmc {
     }
 
     async fn disable_psu_hot_spare(&self) -> Result<(), RedfishError> {
-        println!("SDM enter disable_psu_hot_spare {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter disable_psu_hot_spare {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
 
@@ -1218,7 +1218,7 @@ impl Redfish for Bmc {
 
 impl Bmc {
     pub fn new(s: RedfishStandard) -> Result<Bmc, RedfishError> {
-        println!("SDM enter new {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter new {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         Ok(Bmc { s })
     }
 
@@ -1227,7 +1227,7 @@ impl Bmc {
         &self,
         boot_interface_mac: Option<&str>,
     ) -> Result<Vec<MachineSetupDiff>, RedfishError> {
-        println!("SDM enter diff_bios_bmc_attr {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter diff_bios_bmc_attr {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let mut diffs = vec![];
 
         let bios = self.s.bios_attributes().await?;
@@ -1370,7 +1370,7 @@ impl Bmc {
     }
 
     async fn perform_ac_power_cycle(&self) -> Result<(), RedfishError> {
-        println!("SDM enter perform_ac_power_cycle {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter perform_ac_power_cycle {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         self.clear_pending().await?;
 
         // Set PowerCycleRequest in BIOS settings
@@ -1417,7 +1417,7 @@ impl Bmc {
 
     // No changes can be applied if there are pending jobs
     async fn delete_job_queue(&self) -> Result<(), RedfishError> {
-        println!("SDM enter delete_job_queue {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter delete_job_queue {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // The queue can't be cleared if system lockdown is enabled
         if self.is_lockdown().await? {
             return Err(RedfishError::Lockdown);
@@ -1434,7 +1434,7 @@ impl Bmc {
 
     // is_lockdown checks if system lockdown is enabled.
     async fn is_lockdown(&self) -> Result<bool, RedfishError> {
-        println!("SDM enter is_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter is_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let (attrs, url) = self.manager_attributes().await?;
         let system_lockdown = jsonmap::get_str(&attrs, "Lockdown.1.SystemLockdown", &url)?;
 
@@ -1447,7 +1447,7 @@ impl Bmc {
         entry: dell::BootDevices,
         once: bool,
     ) -> Result<(), RedfishError> {
-        println!("SDM enter set_boot_first {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_boot_first {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset,
         };
@@ -1476,7 +1476,7 @@ impl Bmc {
     }
 
     async fn set_idrac_lockdown(&self, enabled: EnabledDisabled) -> Result<(), RedfishError> {
-        println!("SDM enter set_idrac_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter set_idrac_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id: &str = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
 
@@ -1494,7 +1494,7 @@ impl Bmc {
     }
 
     async fn enable_bmc_lockdown(&self, entry: dell::BootDevices) -> Result<(), RedfishError> {
-        println!("SDM enter enable_bmc_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_bmc_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset,
         };
@@ -1540,7 +1540,7 @@ impl Bmc {
     }
 
     async fn disable_bios_lockdown(&self) -> Result<(), RedfishError> {
-        println!("SDM enter disable_bios_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter disable_bios_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset, // requires reboot to apply
         };
@@ -1574,7 +1574,7 @@ impl Bmc {
     }
 
     async fn disable_bmc_lockdown(&self, entry: dell::BootDevices) -> Result<(), RedfishError> {
-        println!("SDM enter disable_bmc_lockdown {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter disable_bmc_lockdown {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::Immediate, // bmc settings don't require reboot
         };
@@ -1601,7 +1601,7 @@ impl Bmc {
     }
 
     async fn setup_bmc_remote_access(&self) -> Result<(), RedfishError> {
-        println!("SDM enter setup_bmc_remote_access {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter setup_bmc_remote_access {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // Try the regular Attributes path first (iDRAC 9 and earlier)
         match self.setup_bmc_remote_access_standard().await {
             Ok(()) => return Ok(()),
@@ -1620,7 +1620,7 @@ impl Bmc {
 
     /// Setup BMC remote access via standard Attributes path (iDRAC 9 and earlier).
     async fn setup_bmc_remote_access_standard(&self) -> Result<(), RedfishError> {
-        println!("SDM enter setup_bmc_remote_access_standard {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter setup_bmc_remote_access_standard {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::Immediate,
         };
@@ -1652,7 +1652,7 @@ impl Bmc {
 
     /// Setup BMC remote access via OEM DellAttributes path (iDRAC 10).
     async fn setup_bmc_remote_access_oem(&self) -> Result<(), RedfishError> {
-        println!("SDM enter setup_bmc_remote_access_oem {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter setup_bmc_remote_access_oem {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
 
@@ -1670,7 +1670,7 @@ impl Bmc {
     }
 
     async fn bmc_remote_access_status(&self) -> Result<Status, RedfishError> {
-        println!("SDM enter bmc_remote_access_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter bmc_remote_access_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let (attrs, _) = self.manager_attributes().await?;
         let expected = vec![
             // "any" means any value counts as correctly disabled
@@ -1711,7 +1711,7 @@ impl Bmc {
     }
 
     async fn bios_serial_console_status(&self) -> Result<Status, RedfishError> {
-        println!("SDM enter bios_serial_console_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter bios_serial_console_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let mut message = String::new();
 
         // Start with true, then check every value to see whether it means things are not setup
@@ -1837,7 +1837,7 @@ impl Bmc {
 
     // dell stores the sel as part of the manager
     async fn get_system_event_log(&self) -> Result<Vec<LogEntry>, RedfishError> {
-        println!("SDM enter get_system_event_log {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_system_event_log {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/LogServices/Sel/Entries");
         let (_status_code, log_entry_collection): (_, LogEntryCollection) =
@@ -1851,7 +1851,7 @@ impl Bmc {
     async fn manager_attributes(
         &self,
     ) -> Result<(serde_json::Map<String, serde_json::Value>, String), RedfishError> {
-        println!("SDM enter manager_attributes {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter manager_attributes {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
         let (_status_code, mut body): (_, HashMap<String, serde_json::Value>) =
@@ -1862,7 +1862,7 @@ impl Bmc {
 
     /// Extra Dell-specific attributes we need to set that are not BIOS attributes
     async fn machine_setup_oem(&self) -> Result<(), RedfishError> {
-        println!("SDM enter machine_setup_oem {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter machine_setup_oem {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
 
@@ -1885,7 +1885,7 @@ impl Bmc {
     }
 
     async fn manager_dell_oem_attributes(&self) -> Result<serde_json::Value, RedfishError> {
-        println!("SDM enter manager_dell_oem_attributes {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter manager_dell_oem_attributes {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!("Managers/{manager_id}/Oem/Dell/DellAttributes/{manager_id}");
         let (_status_code, mut body): (_, HashMap<String, serde_json::Value>) =
@@ -1900,7 +1900,7 @@ impl Bmc {
     // TPM is enabled by default so we never call this.
     #[allow(dead_code)]
     async fn enable_tpm(&self) -> Result<(), RedfishError> {
-        println!("SDM enter enable_tpm {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter enable_tpm {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset, // requires reboot to apply
         };
@@ -1924,7 +1924,7 @@ impl Bmc {
     // Lenovo does not support disabling TPM2.0
     #[allow(dead_code)]
     async fn disable_tpm(&self) -> Result<(), RedfishError> {
-        println!("SDM enter disable_tpm {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter disable_tpm {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = dell::SetSettingsApplyTime {
             apply_time: dell::RedfishSettingsApplyTime::OnReset, // requires reboot to apply
         };
@@ -1945,7 +1945,7 @@ impl Bmc {
     }
 
     pub async fn create_bios_config_job(&self) -> Result<String, RedfishError> {
-        println!("SDM enter create_bios_config_job {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter create_bios_config_job {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = "Managers/iDRAC.Embedded.1/Oem/Dell/Jobs";
 
         let mut arg = HashMap::new();
@@ -1964,7 +1964,7 @@ impl Bmc {
         &self,
         nic_slot: &str,
     ) -> Result<dell::MachineBiosAttrs, RedfishError> {
-        println!("SDM enter machine_setup_attrs {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter machine_setup_attrs {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let curr_bios_attributes = self.s.bios_attributes().await?;
 
         // RedirAfterBoot: Not available in iDRAC 10
@@ -2034,7 +2034,7 @@ impl Bmc {
         &self,
         current_uefi_password: &str,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter clear_uefi_password_via_import {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter clear_uefi_password_via_import {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let system_configuration = SystemConfiguration {
             shutdown_type: "Forced".to_string(),
             share_parameters: ShareParameters {
@@ -2053,7 +2053,7 @@ impl Bmc {
         url: &str,
         resp_headers: HeaderMap,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter parse_job_id_from_response_headers {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter parse_job_id_from_response_headers {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let key = "location";
         Ok(resp_headers
             .get(key)
@@ -2082,7 +2082,7 @@ impl Bmc {
         &self,
         system_configuration: SystemConfiguration,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter import_system_configuration {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter import_system_configuration {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = "Managers/iDRAC.Embedded.1/Actions/Oem/EID_674_Manager.ImportSystemConfiguration";
         let (_status_code, _resp_body, resp_headers): (
             _,
@@ -2111,7 +2111,7 @@ impl Bmc {
         &self,
         boot_interface_mac_address: &str,
     ) -> Result<NetworkDeviceFunction, RedfishError> {
-        println!("SDM enter get_dpu_nw_device_function {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_dpu_nw_device_function {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let chassis = self.get_chassis(self.s.system_id()).await?;
         let na_id = match chassis.network_adapters {
             Some(id) => id,
@@ -2171,7 +2171,7 @@ impl Bmc {
         &self,
         mac_address: &str,
     ) -> Result<serde_json::Map<String, Value>, RedfishError> {
-        println!("SDM enter get_dell_nic_info {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_dell_nic_info {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let nw_device_function = self.get_dpu_nw_device_function(mac_address).await?;
 
         let oem = nw_device_function
@@ -2202,7 +2202,7 @@ impl Bmc {
 
     // Returns a string like "NIC.Slot.5-1"
     async fn dpu_nic_slot(&self, mac_address: &str) -> Result<String, RedfishError> {
-        println!("SDM enter dpu_nic_slot {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter dpu_nic_slot {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let dell_nic_info = self.get_dell_nic_info(mac_address).await?;
 
         let nic_slot = dell_nic_info
@@ -2217,7 +2217,7 @@ impl Bmc {
     }
 
     async fn get_boss_controller(&self) -> Result<Option<String>, RedfishError> {
-        println!("SDM enter get_boss_controller {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_boss_controller {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = "Systems/System.Embedded.1/Storage";
         let (_status_code, storage_collection): (_, StorageCollection) =
             self.s.client.get(url).await?;
@@ -2242,7 +2242,7 @@ impl Bmc {
     }
 
     async fn decommission_controller(&self, controller_id: &str) -> Result<String, RedfishError> {
-        println!("SDM enter decommission_controller {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter decommission_controller {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         // wait for the lifecycle controller status to become Ready before decomissioning the boss controller
         // https://github.com/dell/idrac-Redfish-Scripting/issues/323
         self.lifecycle_controller_is_ready().await?;
@@ -2258,7 +2258,7 @@ impl Bmc {
     }
 
     async fn get_storage_drives(&self, controller_id: &str) -> Result<Value, RedfishError> {
-        println!("SDM enter get_storage_drives {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_storage_drives {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let url = format!("Systems/System.Embedded.1/Storage/{controller_id}");
         let (_status_code, body): (_, HashMap<String, serde_json::Value>) =
             self.s.client.get(&url).await?;
@@ -2272,7 +2272,7 @@ impl Bmc {
         raid_type: &str,
         drive_info: Value,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter create_storage_volume {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter create_storage_volume {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         if volume_name.len() > 15 || volume_name.is_empty() {
             return Err(RedfishError::GenericError {
                 error: format!(
@@ -2298,7 +2298,7 @@ impl Bmc {
     }
 
     async fn get_lifecycle_controller_status(&self) -> Result<String, RedfishError> {
-        println!("SDM enter get_lifecycle_controller_status {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_lifecycle_controller_status {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let manager_id = self.s.manager_id();
         let url = format!(
             "Managers/{manager_id}/Oem/Dell/DellLCService/Actions/DellLCService.GetRemoteServicesAPIStatus"
@@ -2323,7 +2323,7 @@ impl Bmc {
     }
 
     async fn lifecycle_controller_is_ready(&self) -> Result<(), RedfishError> {
-        println!("SDM enter lifecycle_controller_is_ready {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter lifecycle_controller_is_ready {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let lc_status = self.get_lifecycle_controller_status().await?;
         if lc_status == "Ready" {
             return Ok(());
@@ -2339,7 +2339,7 @@ impl Bmc {
         &self,
         boot_interface_mac: &str,
     ) -> Result<String, RedfishError> {
-        println!("SDM enter get_expected_dpu_boot_option_name {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_expected_dpu_boot_option_name {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let dell_nic_info = self.get_dell_nic_info(boot_interface_mac).await?;
 
         let device_description = dell_nic_info
@@ -2354,7 +2354,7 @@ impl Bmc {
     }
 
     async fn get_boot_order(&self) -> Result<Vec<BootOption>, RedfishError> {
-        println!("SDM enter get_boot_order {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_boot_order {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let boot_options = self.get_boot_options().await?;
         let mut boot_order: Vec<BootOption> = Vec::new();
         for boot_option in boot_options.members.iter() {
@@ -2373,7 +2373,7 @@ impl Bmc {
         &self,
         boot_interface_mac: &str,
     ) -> Result<(Option<String>, Option<String>), RedfishError> {
-        println!("SDM enter get_expected_and_actual_first_boot_option {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter get_expected_and_actual_first_boot_option {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let expected_first_boot_option = Some(
             self.get_expected_dpu_boot_option_name(boot_interface_mac)
                 .await?,
@@ -2401,7 +2401,7 @@ struct Empty {}
 
 impl UpdateParameters {
     pub fn new(reboot_immediate: bool) -> UpdateParameters {
-        println!("SDM enter new {} {:?}", line!(), std::backtrace::Backtrace::capture());
+        println!("SDM enter new {} {:?}", line!(), std::backtrace::Backtrace::force_capture());
         let apply_time = match reboot_immediate {
             true => "Immediate",
             false => "OnReset",
