@@ -968,6 +968,7 @@ impl RedfishStandard {
     //
 
     pub async fn get_members(&self, url: &str) -> Result<Vec<String>, RedfishError> {
+        println!("SDM get_members url: {:#?}", url);
         let (_, body): (_, HashMap<String, serde_json::Value>) = self.client.get(url).await?;
         self.parse_members(url, body)
     }
