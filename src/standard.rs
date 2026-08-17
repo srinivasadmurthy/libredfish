@@ -1308,6 +1308,34 @@ impl Redfish for RedfishStandard {
         })
     }
 
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+    ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
+        Box::pin(async move {
+            // Not applicable for non-Vera-Rubin vendors
+            Ok(None)
+        })
+    }
+
+    fn set_nic_east_west_control_enabled<'a>(
+        &'a self,
+        _enabled: bool,
+    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        Box::pin(async move {
+            // No-op for non-Vera-Rubin vendors
+            Ok(())
+        })
+    }
+
+    fn get_nic_mac_addresses<'a>(
+        &'a self,
+    ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
+        Box::pin(async move {
+            // Not applicable for non-Vera-Rubin vendors
+            Ok(None)
+        })
+    }
+
     fn set_ntp_servers<'a>(
         &'a self,
         servers: &'a [String],

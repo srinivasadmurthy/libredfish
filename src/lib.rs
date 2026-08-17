@@ -674,6 +674,25 @@ pub trait Redfish: Send + Sync + 'static {
     // Only applicable to Dells
     fn set_utc_timezone<'a>(&'a self) -> RedfishFuture<'a, Result<(), RedfishError>>;
 
+    // Gets Oem.Nvidia.EastWestControlEnabled from CX NIC Settings
+    // Only applicable to Vera-Rubin
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+    ) -> RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>>;
+
+    // Sets Oem.Nvidia.EastWestControlEnabled on CX NIC Settings
+    // Only applicable to Vera-Rubin
+    fn set_nic_east_west_control_enabled<'a>(
+        &'a self,
+        enabled: bool,
+    ) -> RedfishFuture<'a, Result<(), RedfishError>>;
+
+    // Gets MAC addresses for CX_NIC_{0..7}_Port_0 EthernetInterfaces
+    // Only applicable to Vera-Rubin
+    fn get_nic_mac_addresses<'a>(
+        &'a self,
+    ) -> RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>>;
+
     // Sets the NTP servers
     fn set_ntp_servers<'a>(
         &'a self,

@@ -1076,6 +1076,25 @@ impl Redfish for Bmc {
         Box::pin(async move { self.s.set_utc_timezone().await })
     }
 
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+    ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
+        Box::pin(async move { self.s.get_nic_east_west_control_enabled().await })
+    }
+
+    fn set_nic_east_west_control_enabled<'a>(
+        &'a self,
+        enabled: bool,
+    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        Box::pin(async move { self.s.set_nic_east_west_control_enabled(enabled).await })
+    }
+
+    fn get_nic_mac_addresses<'a>(
+        &'a self,
+    ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
+        Box::pin(async move { self.s.get_nic_mac_addresses().await })
+    }
+
     fn set_ntp_servers<'a>(
         &'a self,
         servers: &'a [String],
