@@ -1380,23 +1380,6 @@ impl Redfish for Bmc {
         Box::pin(async move { self.s.set_utc_timezone().await })
     }
 
-    fn get_nic_east_west_control_enabled_all<'a>(
-        &'a self,
-    ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
-        Box::pin(async move {
-            let mut enabled = Vec::with_capacity(8);
-            for i in 0..8 {
-                let url = format!("Chassis/CX_{i}/NetworkAdapters/CX_NIC_{i}/Settings");
-                let (_status_code, body): (StatusCode, HashMap<String, serde_json::Value>) =
-                    self.s.client.get(&url).await?;
-                let oem = jsonmap::get_object(&body, "Oem", &url)?;
-                let nvidia = jsonmap::get_object(oem, "Nvidia", &url)?;
-                enabled.push(jsonmap::get_bool(nvidia, "EastWestControlEnabled", &url)?);
-            }
-            Ok(Some(enabled))
-        })
-    }
-
     fn get_nic_east_west_control_enabled<'a>(
         &'a self,
         nic_index: u8,
@@ -1418,26 +1401,6 @@ impl Redfish for Bmc {
                 "EastWestControlEnabled",
                 &url,
             )?))
-        })
-    }
-
-    fn set_nic_east_west_control_enabled_all<'a>(
-        &'a self,
-        enabled: bool,
-    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
-        Box::pin(async move {
-            let body = serde_json::json!({
-                "Oem": {
-                    "Nvidia": {
-                        "EastWestControlEnabled": enabled
-                    }
-                }
-            });
-            for i in 0..8 {
-                let url = format!("Chassis/CX_{i}/NetworkAdapters/CX_NIC_{i}/Settings");
-                self.s.client.patch(&url, &body).await?;
-            }
-            Ok(())
         })
     }
 
@@ -1466,29 +1429,7 @@ impl Redfish for Bmc {
         })
     }
 
-    fn get_nic_mac_addresses_all<'a>(
-        &'a self,
-    ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
-        Box::pin(async move {
-            let mut macs = Vec::with_capacity(8);
-            for i in 0..8 {
-                let url = format!(
-                    "Systems/{}/EthernetInterfaces/CX_NIC_{i}_Port_0",
-                    self.s.system_id()
-                );
-                let (_status_code, iface): (StatusCode, crate::EthernetInterface) =
-                    self.s.client.get(&url).await?;
-                let mac = iface.mac_address.ok_or_else(|| RedfishError::MissingKey {
-                    key: "MACAddress".to_string(),
-                    url: url.clone(),
-                })?;
-                macs.push(mac);
-            }
-            Ok(Some(macs))
-        })
-    }
-
-    fn get_nic_mac_addresses<'a>(
+    fn get_nic_mac_address<'a>(
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {

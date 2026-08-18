@@ -674,25 +674,12 @@ pub trait Redfish: Send + Sync + 'static {
     // Only applicable to Dells
     fn set_utc_timezone<'a>(&'a self) -> RedfishFuture<'a, Result<(), RedfishError>>;
 
-    // Gets Oem.Nvidia.EastWestControlEnabled from all CX NIC Settings
-    // Only applicable to Vera-Rubin
-    fn get_nic_east_west_control_enabled_all<'a>(
-        &'a self,
-    ) -> RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>>;
-
     // Gets Oem.Nvidia.EastWestControlEnabled from a single CX NIC Settings
     // Only applicable to Vera-Rubin. `nic_index` must be in 0..8.
     fn get_nic_east_west_control_enabled<'a>(
         &'a self,
         nic_index: u8,
     ) -> RedfishFuture<'a, Result<Option<bool>, RedfishError>>;
-
-    // Sets Oem.Nvidia.EastWestControlEnabled on all CX NIC Settings
-    // Only applicable to Vera-Rubin
-    fn set_nic_east_west_control_enabled_all<'a>(
-        &'a self,
-        enabled: bool,
-    ) -> RedfishFuture<'a, Result<(), RedfishError>>;
 
     // Sets Oem.Nvidia.EastWestControlEnabled on a single CX NIC Settings
     // Only applicable to Vera-Rubin. `nic_index` must be in 0..8.
@@ -702,15 +689,9 @@ pub trait Redfish: Send + Sync + 'static {
         enabled: bool,
     ) -> RedfishFuture<'a, Result<(), RedfishError>>;
 
-    // Gets MAC addresses for all CX_NIC_{0..7}_Port_0 EthernetInterfaces
-    // Only applicable to Vera-Rubin
-    fn get_nic_mac_addresses_all<'a>(
-        &'a self,
-    ) -> RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>>;
-
     // Gets MAC address for a single CX_NIC_{nic_index}_Port_0 EthernetInterface
     // Only applicable to Vera-Rubin. `nic_index` must be in 0..8.
-    fn get_nic_mac_addresses<'a>(
+    fn get_nic_mac_address<'a>(
         &'a self,
         nic_index: u8,
     ) -> RedfishFuture<'a, Result<Option<String>, RedfishError>>;
