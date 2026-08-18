@@ -1308,7 +1308,7 @@ impl Redfish for RedfishStandard {
         })
     }
 
-    fn get_nic_east_west_control_enabled<'a>(
+    fn get_nic_east_west_control_enabled_all<'a>(
         &'a self,
     ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
         Box::pin(async move {
@@ -1317,7 +1317,17 @@ impl Redfish for RedfishStandard {
         })
     }
 
-    fn set_nic_east_west_control_enabled<'a>(
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+        _nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
+        Box::pin(async move {
+            // Not applicable for non-Vera-Rubin vendors
+            Ok(None)
+        })
+    }
+
+    fn set_nic_east_west_control_enabled_all<'a>(
         &'a self,
         _enabled: bool,
     ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
@@ -1327,9 +1337,30 @@ impl Redfish for RedfishStandard {
         })
     }
 
-    fn get_nic_mac_addresses<'a>(
+    fn set_nic_east_west_control_enabled<'a>(
+        &'a self,
+        _nic_index: u8,
+        _enabled: bool,
+    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        Box::pin(async move {
+            // No-op for non-Vera-Rubin vendors
+            Ok(())
+        })
+    }
+
+    fn get_nic_mac_addresses_all<'a>(
         &'a self,
     ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
+        Box::pin(async move {
+            // Not applicable for non-Vera-Rubin vendors
+            Ok(None)
+        })
+    }
+
+    fn get_nic_mac_addresses<'a>(
+        &'a self,
+        _nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
         Box::pin(async move {
             // Not applicable for non-Vera-Rubin vendors
             Ok(None)

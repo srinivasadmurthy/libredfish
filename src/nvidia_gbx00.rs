@@ -1386,23 +1386,49 @@ impl Redfish for Bmc {
         Box::pin(async move { self.s.set_utc_timezone().await })
     }
 
-    fn get_nic_east_west_control_enabled<'a>(
+    fn get_nic_east_west_control_enabled_all<'a>(
         &'a self,
     ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
-        Box::pin(async move { self.s.get_nic_east_west_control_enabled().await })
+        Box::pin(async move { self.s.get_nic_east_west_control_enabled_all().await })
+    }
+
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+        nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
+        Box::pin(async move { self.s.get_nic_east_west_control_enabled(nic_index).await })
+    }
+
+    fn set_nic_east_west_control_enabled_all<'a>(
+        &'a self,
+        enabled: bool,
+    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        Box::pin(async move { self.s.set_nic_east_west_control_enabled_all(enabled).await })
     }
 
     fn set_nic_east_west_control_enabled<'a>(
         &'a self,
+        nic_index: u8,
         enabled: bool,
     ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
-        Box::pin(async move { self.s.set_nic_east_west_control_enabled(enabled).await })
+        Box::pin(async move {
+            self.s
+                .set_nic_east_west_control_enabled(nic_index, enabled)
+                .await
+        })
+    }
+
+    fn get_nic_mac_addresses_all<'a>(
+        &'a self,
+    ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
+        Box::pin(async move { self.s.get_nic_mac_addresses_all().await })
     }
 
     fn get_nic_mac_addresses<'a>(
         &'a self,
-    ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
-        Box::pin(async move { self.s.get_nic_mac_addresses().await })
+        nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
+        Box::pin(async move { self.s.get_nic_mac_addresses(nic_index).await })
     }
 
     fn set_ntp_servers<'a>(

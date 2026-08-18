@@ -1380,7 +1380,7 @@ impl Redfish for Bmc {
         Box::pin(async move { self.s.set_utc_timezone().await })
     }
 
-    fn get_nic_east_west_control_enabled<'a>(
+    fn get_nic_east_west_control_enabled_all<'a>(
         &'a self,
     ) -> crate::RedfishFuture<'a, Result<Option<Vec<bool>>, RedfishError>> {
         Box::pin(async move {
@@ -1397,7 +1397,31 @@ impl Redfish for Bmc {
         })
     }
 
-    fn set_nic_east_west_control_enabled<'a>(
+    fn get_nic_east_west_control_enabled<'a>(
+        &'a self,
+        nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
+        Box::pin(async move {
+            if nic_index >= 8 {
+                return Err(RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                });
+            }
+            let url =
+                format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
+            let (_status_code, body): (StatusCode, HashMap<String, serde_json::Value>) =
+                self.s.client.get(&url).await?;
+            let oem = jsonmap::get_object(&body, "Oem", &url)?;
+            let nvidia = jsonmap::get_object(oem, "Nvidia", &url)?;
+            Ok(Some(jsonmap::get_bool(
+                nvidia,
+                "EastWestControlEnabled",
+                &url,
+            )?))
+        })
+    }
+
+    fn set_nic_east_west_control_enabled_all<'a>(
         &'a self,
         enabled: bool,
     ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
@@ -1417,7 +1441,32 @@ impl Redfish for Bmc {
         })
     }
 
-    fn get_nic_mac_addresses<'a>(
+    fn set_nic_east_west_control_enabled<'a>(
+        &'a self,
+        nic_index: u8,
+        enabled: bool,
+    ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        Box::pin(async move {
+            if nic_index >= 8 {
+                return Err(RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                });
+            }
+            let body = serde_json::json!({
+                "Oem": {
+                    "Nvidia": {
+                        "EastWestControlEnabled": enabled
+                    }
+                }
+            });
+            let url =
+                format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
+            self.s.client.patch(&url, &body).await?;
+            Ok(())
+        })
+    }
+
+    fn get_nic_mac_addresses_all<'a>(
         &'a self,
     ) -> crate::RedfishFuture<'a, Result<Option<Vec<String>>, RedfishError>> {
         Box::pin(async move {
@@ -1436,6 +1485,30 @@ impl Redfish for Bmc {
                 macs.push(mac);
             }
             Ok(Some(macs))
+        })
+    }
+
+    fn get_nic_mac_addresses<'a>(
+        &'a self,
+        nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
+        Box::pin(async move {
+            if nic_index >= 8 {
+                return Err(RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                });
+            }
+            let url = format!(
+                "Systems/{}/EthernetInterfaces/CX_NIC_{nic_index}_Port_0",
+                self.s.system_id()
+            );
+            let (_status_code, iface): (StatusCode, crate::EthernetInterface) =
+                self.s.client.get(&url).await?;
+            let mac = iface.mac_address.ok_or_else(|| RedfishError::MissingKey {
+                key: "MACAddress".to_string(),
+                url: url.clone(),
+            })?;
+            Ok(Some(mac))
         })
     }
 
