@@ -1380,7 +1380,7 @@ impl Redfish for Bmc {
         Box::pin(async move { self.s.set_utc_timezone().await })
     }
 
-    fn get_nic_east_west_control_enabled<'a>(
+    fn get_spx_nic_east_west_control_enabled<'a>(
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
@@ -1404,7 +1404,7 @@ impl Redfish for Bmc {
         })
     }
 
-    fn set_nic_east_west_control_enabled<'a>(
+    fn set_spx_nic_east_west_control_enabled<'a>(
         &'a self,
         nic_index: u8,
         enabled: bool,
@@ -1429,7 +1429,7 @@ impl Redfish for Bmc {
         })
     }
 
-    fn get_nic_mac_address<'a>(
+    fn get_spx_nic_mac_address<'a>(
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
@@ -1450,6 +1450,30 @@ impl Redfish for Bmc {
                 url: url.clone(),
             })?;
             Ok(Some(mac))
+        })
+    }
+
+    fn get_spx_nic_model_and_name<'a>(
+        &'a self,
+        nic_index: u8,
+    ) -> crate::RedfishFuture<'a, Result<Option<crate::SpxNicModelAndName>, RedfishError>> {
+        Box::pin(async move {
+            if nic_index >= 8 {
+                return Err(RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                });
+            }
+            let chassis_id = format!("CX_{nic_index}");
+            let chassis = self.get_chassis(&chassis_id).await?;
+            let model = chassis.model.ok_or_else(|| RedfishError::MissingKey {
+                key: "Model".to_string(),
+                url: format!("Chassis/{chassis_id}"),
+            })?;
+            let name = chassis.name.ok_or_else(|| RedfishError::MissingKey {
+                key: "Name".to_string(),
+                url: format!("Chassis/{chassis_id}"),
+            })?;
+            Ok(Some(crate::SpxNicModelAndName { model, name }))
         })
     }
 
