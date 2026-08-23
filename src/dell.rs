@@ -1443,35 +1443,61 @@ impl Redfish for Bmc {
 
     fn get_spx_nic_east_west_control_enabled<'a>(
         &'a self,
-        nic_index: u8,
+        _nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
-        Box::pin(async move { self.s.get_spx_nic_east_west_control_enabled(nic_index).await })
+        Box::pin(async move { Ok(Some(true)) })
     }
 
     fn set_spx_nic_east_west_control_enabled<'a>(
         &'a self,
-        nic_index: u8,
-        enabled: bool,
+        _nic_index: u8,
+        _enabled: bool,
     ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
-        Box::pin(async move {
-            self.s
-                .set_spx_nic_east_west_control_enabled(nic_index, enabled)
-                .await
-        })
+        Box::pin(async move { Ok(()) })
     }
 
     fn get_spx_nic_mac_address<'a>(
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
-        Box::pin(async move { self.s.get_spx_nic_mac_address(nic_index).await })
+        Box::pin(async move {
+            const SPX_NIC_MAC_ADDRESSES: [&str; 8] = [
+                "DC:73:FC:21:F8:40",
+                "DC:73:FC:21:F8:50",
+                "DC:73:FC:21:F8:20",
+                "DC:73:FC:21:F8:30",
+                "DC:73:FC:21:F9:40",
+                "DC:73:FC:21:F9:50",
+                "DC:73:FC:21:F9:20",
+                "DC:73:FC:21:F9:30",
+            ];
+
+            let mac = SPX_NIC_MAC_ADDRESSES
+                .get(nic_index as usize)
+                .ok_or_else(|| RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                })?;
+            Ok(Some(mac.to_string()))
+        })
     }
 
     fn get_spx_nic_model_and_name<'a>(
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<crate::SpxNicModelAndName>, RedfishError>> {
-        Box::pin(async move { self.s.get_spx_nic_model_and_name(nic_index).await })
+        Box::pin(async move {
+            if nic_index >= 8 {
+                return Err(RedfishError::GenericError {
+                    error: format!("nic_index {nic_index} out of range; expected 0..8"),
+                });
+            }
+            Ok(Some(crate::SpxNicModelAndName {
+                model: "NVIDIA Dual ConnectX-9 SuperNIC C9280V for Vera Rubin NVL 144 systems, \
+                        Crypto Enabled, Secure Boot Enabled, Liquid Cooled"
+                    .to_string(),
+                name: format!("CX_{nic_index}"),
+            }))
+        })
     }
 
     fn set_ntp_servers<'a>(

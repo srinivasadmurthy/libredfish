@@ -1390,8 +1390,7 @@ impl Redfish for Bmc {
                     error: format!("nic_index {nic_index} out of range; expected 0..8"),
                 });
             }
-            let url =
-                format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
+            let url = format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
             let (_status_code, body): (StatusCode, HashMap<String, serde_json::Value>) =
                 self.s.client.get(&url).await?;
             let oem = jsonmap::get_object(&body, "Oem", &url)?;
@@ -1422,8 +1421,7 @@ impl Redfish for Bmc {
                     }
                 }
             });
-            let url =
-                format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
+            let url = format!("Chassis/CX_{nic_index}/NetworkAdapters/CX_NIC_{nic_index}/Settings");
             self.s.client.patch(&url, &body).await?;
             Ok(())
         })

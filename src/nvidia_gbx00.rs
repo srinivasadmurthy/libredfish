@@ -1390,7 +1390,11 @@ impl Redfish for Bmc {
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
-        Box::pin(async move { self.s.get_spx_nic_east_west_control_enabled(nic_index).await })
+        Box::pin(async move {
+            self.s
+                .get_spx_nic_east_west_control_enabled(nic_index)
+                .await
+        })
     }
 
     fn set_spx_nic_east_west_control_enabled<'a>(
