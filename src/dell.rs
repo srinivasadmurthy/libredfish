@@ -1445,6 +1445,7 @@ impl Redfish for Bmc {
         &'a self,
         _nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<bool>, RedfishError>> {
+        tracing::info!("SDM get_spx_nic_east_west_control_enabled: {_nic_index}");
         Box::pin(async move { Ok(Some(true)) })
     }
 
@@ -1453,6 +1454,7 @@ impl Redfish for Bmc {
         _nic_index: u8,
         _enabled: bool,
     ) -> crate::RedfishFuture<'a, Result<(), RedfishError>> {
+        tracing::info!("SDM set_spx_nic_east_west_control_enabled: {_nic_index}, {_enabled}");
         Box::pin(async move { Ok(()) })
     }
 
@@ -1460,6 +1462,7 @@ impl Redfish for Bmc {
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<String>, RedfishError>> {
+        tracing::info!("SDM get_spx_nic_mac_address: {nic_index}");
         Box::pin(async move {
             const SPX_NIC_MAC_ADDRESSES: [&str; 8] = [
                 "DC:73:FC:21:F8:40",
@@ -1485,6 +1488,7 @@ impl Redfish for Bmc {
         &'a self,
         nic_index: u8,
     ) -> crate::RedfishFuture<'a, Result<Option<crate::SpxNicModelAndName>, RedfishError>> {
+        tracing::info!("SDM get_spx_nic_model_and_name: {nic_index}");
         Box::pin(async move {
             if nic_index >= 8 {
                 return Err(RedfishError::GenericError {
